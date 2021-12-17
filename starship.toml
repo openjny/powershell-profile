@@ -1,0 +1,47 @@
+# 表示される項目の順序の設定(基本デフォルトで良い)
+prompt_order = [
+    "username",
+    "directory",
+    "line_break", #改行を入れたい位置に追加
+    "git_branch",
+    "git_commit",
+    "git_state",
+    "git_status",
+    "character"
+]
+
+[battery]
+full_symbol = "🔋"
+charging_symbol = "🔌"
+discharging_symbol = "⚡"
+
+[character]
+symbol = "$" # 文字を変更(デフォルトは > )
+
+[directory]
+format = "[$path]($style)[$read_only]($read_only_style) "
+truncation_length = 4
+truncate_to_repo = false
+truncation_symbol = "…/"
+
+[shell]
+disabled = false
+powershell_indicator = "_"
+
+[time]
+disabled = false
+time_format = "%T"
+format = "🕙 $time($style) "
+style = "bright-white"
+
+[hostname]
+disabled = true
+
+[username]
+disabled = true
+
+[python]
+disabled = true
+
+format = "[$symbol$version]($style) "
+style = "bold green"

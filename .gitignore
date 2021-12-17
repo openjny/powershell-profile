@@ -1,0 +1,14 @@
+# Ignore all
+*
+!*/
+Modules/*
+Scripts/*
+
+# except for ...
+!.gitignore
+!README.md
+!profile.ps1
+!bin/**
+!utils/**
+!setup.ps1
+!starship.toml
