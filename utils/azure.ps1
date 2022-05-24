@@ -7,8 +7,8 @@ function Select-MyAzSubscription {
         Get-AzSubscription | Out-GridView -PassThru | Select-AzSubscription
     }
 }
-function az-select-subscription {
-    if ((test fzf) && (test fq)) {
+function select_subscription {
+    if ((test az) && (test fzf) && (test jq)) {
         az account list | jq '.[] | {name: .name, id: .id}' -c | fzf | jq -r '.id' | % { az account set -s $_ }
     } else {
         Get-AzSubscription | Out-GridView -PassThru | Select-AzSubscription
