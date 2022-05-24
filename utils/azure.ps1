@@ -15,7 +15,7 @@ function select_subscription {
     }
 }
 
-function start-appgw {
+function start_appgw {
     Get-AzApplicationGateway | Select-Object Name, ResourceGroupName, OperationalState | Out-GridView -PassThru | ForEach-Object {
         Get-AzApplicationGateway -Name $_.Name -ResourceGroupName $_.ResourceGroupName | Start-AzApplicationGateway
     }
