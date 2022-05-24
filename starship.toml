@@ -1,32 +1,22 @@
-# 表示される項目の順序の設定(基本デフォルトで良い)
-prompt_order = [
-    "username",
-    "directory",
-    "line_break", #改行を入れたい位置に追加
-    "git_branch",
-    "git_commit",
-    "git_state",
-    "git_status",
-    "character"
-]
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = "$directory$all$character"
+
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[>](bold red)"
 
 [battery]
+disabled = false
 full_symbol = "🔋"
 charging_symbol = "🔌"
 discharging_symbol = "⚡"
 
-[character]
-symbol = "$" # 文字を変更(デフォルトは > )
-
 [directory]
 format = "[$path]($style)[$read_only]($read_only_style) "
-truncation_length = 4
+truncation_length = 3
 truncate_to_repo = false
-truncation_symbol = "…/"
-
-[shell]
-disabled = false
-powershell_indicator = "_"
+truncation_symbol = ".../"
 
 [time]
 disabled = false
@@ -34,14 +24,22 @@ time_format = "%T"
 format = "🕙 $time($style) "
 style = "bright-white"
 
-[hostname]
-disabled = true
+[git_branch]
+symbol = "🌱 "
 
-[username]
-disabled = true
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+cherry_pick = "[🍒 PICKING](bold red)"
 
-[python]
-disabled = true
+[git_commit]
+commit_hash_length = 4
+tag_symbol = "🔖 "
 
-format = "[$symbol$version]($style) "
-style = "bold green"
+[git_metrics]
+added_style = "bold blue"
+format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+
+[git_status]
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
