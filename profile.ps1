@@ -148,3 +148,9 @@ if (Test-Path $LocalProfilePath) { . $LocalProfilePath }
 # cheat
 # - https://github.com/OpenJNY/cheat
 $env:CHEAT_CONFIG_PATH = "~/cheat/conf.yml"
+if (Test-Command curl.exe) {
+    function Get-CheatSheet([string]$name) {
+        Write-Output (curl.exe -s "cheat.sh/$name")
+    }
+    Set-Alias cht Get-CheatSheet
+}
