@@ -144,3 +144,7 @@ Get-ChildItem $ProfileDir\utils\*.ps1 | ForEach-Object { . $_.FullName }
 # Local profile
 $LocalProfilePath = "$HOME\profile.local.ps1"
 if (Test-Path $LocalProfilePath) { . $LocalProfilePath }
+
+# cheat
+# - https://github.com/OpenJNY/cheat
+$env:CHEAT_CONFIG_PATH = "~/cheat/conf.yml"
