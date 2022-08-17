@@ -7,11 +7,12 @@ function Select-MyAzSubscription {
         Get-AzSubscription | Out-GridView -PassThru | Select-AzSubscription
     }
 }
-function select_subscription {
+function az-select-subscription {
     if ((test az) && (test fzf) && (test jq)) {
         az account list | jq '.[] | {name: .name, id: .id}' -c | fzf | jq -r '.id' | % { az account set -s $_ }
-    } else {
-        Get-AzSubscription | Out-GridView -PassThru | Select-AzSubscription
+    }
+    else {
+        az account list | ConvertFrom-Json | Select-Object name, id, tenantId | Out-GridView -PassThru | ForEach-Object { az account set -s %_.id }
     }
 }
 
@@ -30,15 +31,15 @@ function start_afw {
     $afw_metadata | ForEach-Object {
         # select PIPs
         $pip_metadata = Get-AzPublicIpAddress -ResourceGroupName $_.ResourceGroupName `
-            | Where-Object IpConfiguration -eq $Null `
-            | Where-Object Location -eq $_.Location `
-            | Select-Object Name, ResourceGroupName, Location `
-            | Out-GridView -PassThru
+        | Where-Object IpConfiguration -eq $Null `
+        | Where-Object Location -eq $_.Location `
+        | Select-Object Name, ResourceGroupName, Location `
+        | Out-GridView -PassThru
         # select VNets
         $vnet_metadata = Get-AzVirtualNetwork -ResourceGroupName $_.ResourceGroupName `
-            | Where-Object Location -eq $_.Location `
-            | Select-Object Name, ResourceGroupName, Location `
-            | Out-GridView -PassThru
+        | Where-Object Location -eq $_.Location `
+        | Select-Object Name, ResourceGroupName, Location `
+        | Out-GridView -PassThru
         
         $azfw = Get-AzFirewall -Name $_.Name -ResourceGroupName $_.ResourceGroupName
         $vnet = Get-AzVirtualNetwork -Name $vnet_metadata.Name -ResourceGroupName $vnet_metadata.ResourceGroupName
