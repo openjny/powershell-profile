@@ -154,3 +154,6 @@ if (Test-Command curl.exe) {
     }
     Set-Alias cht Get-CheatSheet
 }
+
+# zoxide
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
