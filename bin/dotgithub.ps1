@@ -31,6 +31,7 @@ function Show-Help {
     Write-Host "  dotgithub list                      - List available templates"
     Write-Host "  dotgithub apply <template> [-Force] - Apply template to current directory"
     Write-Host "  dotgithub push <template> [-Force]  - Update template from current directory"
+    Write-Host "  dotgithub delete <template>         - Delete a template"
     Write-Host ""
     Write-Host "Available templates:" -ForegroundColor Yellow
     Show-TemplateList
@@ -66,8 +67,19 @@ function Copy-FileWithPolicy {
     }
 }
 
+# 共通関数: テンプレート存在確認
+function Assert-TemplateExists {
+    param([string]$TemplateName)
+    if ($TemplateName -notin $AvailableTemplates) {
+        Write-Host "Error: Template '$TemplateName' not found." -ForegroundColor Red
+        Write-Host "Available templates:" -ForegroundColor Yellow
+        Show-TemplateList
+        exit 1
+    }
+}
+
 # コマンドなしまたは不正なコマンド
-if (-not $Command -or $Command -notin @('list', 'apply', 'push')) {
+if (-not $Command -or $Command -notin @('list', 'apply', 'push', 'delete')) {
     if ($Command) {
         Write-Host "Error: Unknown command '$Command'" -ForegroundColor Red
         Write-Host ""
@@ -93,12 +105,7 @@ if (-not $Template) {
 
 # apply: テンプレートを現在のディレクトリに展開
 if ($Command -eq 'apply') {
-    if ($Template -notin $AvailableTemplates) {
-        Write-Host "Error: Template '$Template' not found." -ForegroundColor Red
-        Write-Host "Available templates:" -ForegroundColor Yellow
-        Show-TemplateList
-        exit 1
-    }
+    Assert-TemplateExists $Template
 
     $SourcePath = Join-Path $TemplateRoot $Template
     $DestinationPath = $PWD.Path
@@ -154,5 +161,15 @@ if ($Command -eq 'push') {
     }
 
     Write-Host "`nTemplate '$Template' updated successfully." -ForegroundColor Cyan
+    return
+}
+
+# delete: テンプレートを削除
+if ($Command -eq 'delete') {
+    Assert-TemplateExists $Template
+
+    $TemplatePath = Join-Path $TemplateRoot $Template
+    Remove-Item -Path $TemplatePath -Recurse -Force
+    Write-Host "Template '$Template' deleted successfully." -ForegroundColor Cyan
     return
 }
